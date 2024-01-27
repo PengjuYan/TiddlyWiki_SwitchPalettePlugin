@@ -1,21 +1,22 @@
 /***
-|''Name''|SwitchColorPalettePlugin|
-|''Description''|This plugin allows the user to switch between color palettes by the {{{switchColorPalette}}} macro|
+|''Name''|{{{SwitchPalettePlugin}}}|
+|''Description''|Allows to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
 |''Version''|1.0.0|
-|''Source''|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/DarkModePlugin.js|
+|''Source''|[[DarkModePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/DarkModePlugin.js]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
+|''Acknowledgements''|Inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
 !!! Switch Form
-|<<switchColorPalette "ColorPalette (original)">>|[[ColorPalette (original)]]|
-|<<switchColorPalette "ColorPalette (original reversed)" true>>|[[ColorPalette (original reversed)]]|
-|<<switchColorPalette "ColorPalette (jermolene)">>|[[ColorPalette (jermolene)]]|
-|<<switchColorPalette "ColorPalette (jermolene reversed)" true>>|[[ColorPalette (jermolene reversed)]]|
-|<<switchColorPalette "ColorPalette (yakovl dark)" true>>|[[ColorPalette (yakovl dark)]]|
-|<<switchColorPalette "ColorPalette (pengju dark)" true>>|[[ColorPalette (pengju dark)]]|
+|<<switchPalette "ColorPalette (original)">>|[[ColorPalette (original)]]|
+|<<switchPalette "ColorPalette (original reversed)" true>>|[[ColorPalette (original reversed)]]|
+|<<switchPalette "ColorPalette (jermolene)">>|[[ColorPalette (jermolene)]]|
+|<<switchPalette "ColorPalette (jermolene reversed)" true>>|[[ColorPalette (jermolene reversed)]]|
+|<<switchPalette "ColorPalette (yakovl dark)" true>>|[[ColorPalette (yakovl dark)]]|
+|<<switchPalette "ColorPalette (pengju dark)" true>>|[[ColorPalette (pengju dark)]]|
 !!!Code
 ***/
 //{{{
-config.macros.switchColorPalette = {
+config.macros.switchPalette = {
     getMainPaletteTitle: function () {
         return "ColorPalette";
     },
@@ -35,42 +36,61 @@ config.macros.switchColorPalette = {
         }
     },
 
+    getPaletteOrigin: function () {
+        var mainPaletteTitle = this.getMainPaletteTitle();
+        var mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
+        if (!mainPaletteTiddler) return ["", false];
+
+        var originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
+        var originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
+        return [originPaletteTitle, originIsDarkMode];
+    },
+
     handler: function (place, macroName, params, wikifier, paramString, sourceTiddler) {
         var args = paramString.parseParams("anon", null, null)[0];
         var params = args.anon || [];
-        var colorPaletteTitle = params[0] || null;
+        var sourcePaletteTitle = params[0] || null;
         var isDarkMode = params[1] || false;
 
-        if (!colorPaletteTitle) return;
+        var label = "Switch palette";
+        var tooltip = `switch to ${sourcePaletteTitle}`;
 
-        var label = "Switch Palette";
-        var tooltip = `switch to ${colorPaletteTitle}`;
+        const [originPaletteTitle, originIsDarkMode] = this.getPaletteOrigin();
+        if (sourcePaletteTitle == originPaletteTitle) {
+            label += " (ON)";
+        }
+
+        pluginTiddlerTitle = sourceTiddler.title;
 
         createTiddlyButton(place, label, tooltip, function () {
-            var me = config.macros.switchColorPalette;
-            var paletteTitle = me.getMainPaletteTitle();
+            var me = config.macros.switchPalette;
+            var mainPaletteTitle = me.getMainPaletteTitle();
 
-            var sourceTiddler = store.getTiddler(colorPaletteTitle);
-            if (!sourceTiddler) return;
+            var sourcePaletteTiddler = store.getTiddler(sourcePaletteTitle);
+            if (!sourcePaletteTiddler) return;
 
-            var targetTiddler = new Tiddler(paletteTitle);
-            targetTiddler.text = sourceTiddler.text;
-            targetTiddler.creator = sourceTiddler.creator;
-            targetTiddler.modifier = sourceTiddler.modifier;
-            targetTiddler.created = sourceTiddler.created;
-            targetTiddler.modified = sourceTiddler.modified;
-            targetTiddler.links = sourceTiddler.links;
-            targetTiddler.linksUpdated = sourceTiddler.linksUpdated;
-            targetTiddler.tags = sourceTiddler.tags;
-            targetTiddler.fields = sourceTiddler.fields;
+            var targetPaletteTiddler = new Tiddler(mainPaletteTitle);
+            targetPaletteTiddler.text = sourcePaletteTiddler.text;
+            targetPaletteTiddler.creator = sourcePaletteTiddler.creator;
+            targetPaletteTiddler.modifier = sourcePaletteTiddler.modifier;
+            targetPaletteTiddler.created = sourcePaletteTiddler.created;
+            targetPaletteTiddler.modified = sourcePaletteTiddler.modified;
+            targetPaletteTiddler.links = sourcePaletteTiddler.links;
+            targetPaletteTiddler.linksUpdated = sourcePaletteTiddler.linksUpdated;
+            targetPaletteTiddler.tags = sourcePaletteTiddler.tags;
+            targetPaletteTiddler.fields = sourcePaletteTiddler.fields;
 
-            store.saveTiddler(targetTiddler);
+            targetPaletteTiddler.fields['from.palette'] = sourcePaletteTitle;
+            targetPaletteTiddler.fields['is.dark.mode'] = isDarkMode;
+
+            store.saveTiddler(targetPaletteTiddler);
+            story.refreshTiddler(pluginTiddlerTitle, null, true);
 
             me.applyAdjustments(isDarkMode);
             refreshColorPalette()
         });
     }
-}
+};
 //}}}
 /***
 !!!FollowDarkMode
