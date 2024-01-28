@@ -22,8 +22,8 @@ config.macros.switchPalette = {
     },
 
     applySectionCSS: function (sectionName) {
-        var sectionText = store.getRecursiveTiddlerText(this.pluginName + "##" + sectionName, "", 1);
-        var css = sectionText.replace(/^\s*{{{((?:.|\n)*?)}}}\s*$/, "$1");
+        const sectionText = store.getRecursiveTiddlerText(this.pluginName + "##" + sectionName, "", 1);
+        const css = sectionText.replace(/^\s*{{{((?:.|\n)*?)}}}\s*$/, "$1");
         return setStylesheet(css, sectionName);
     },
     applyAdjustments: function (isDarkMode) {
@@ -37,39 +37,37 @@ config.macros.switchPalette = {
     },
 
     getPaletteOrigin: function () {
-        var mainPaletteTitle = this.getMainPaletteTitle();
-        var mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
+        const mainPaletteTitle = this.getMainPaletteTitle();
+        const mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
         if (!mainPaletteTiddler) return ["", false];
 
-        var originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
-        var originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
+        const originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
+        const originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
         return [originPaletteTitle, originIsDarkMode];
     },
 
     handler: function (place, macroName, params, wikifier, paramString, sourceTiddler) {
-        var args = paramString.parseParams("anon", null, null)[0];
-        var params = args.anon || [];
-        var sourcePaletteTitle = params[0] || null;
-        var isDarkMode = params[1] || false;
+        const args = paramString.parseParams("anon", null, null)[0];
+        const pParams = args.anon || [];
+        const sourcePaletteTitle = pParams[0] || null;
+        const isDarkMode = pParams[1] || false;
 
-        var label = "Switch palette";
-        var tooltip = `switch to ${sourcePaletteTitle}`;
+        let label = "Switch palette";
+        const tooltip = `switch to ${sourcePaletteTitle}`;
 
         const [originPaletteTitle, originIsDarkMode] = this.getPaletteOrigin();
         if (sourcePaletteTitle == originPaletteTitle) {
             label += " (ON)";
         }
 
-        pluginTiddlerTitle = sourceTiddler.title;
-
         createTiddlyButton(place, label, tooltip, function () {
-            var me = config.macros.switchPalette;
-            var mainPaletteTitle = me.getMainPaletteTitle();
+            const me = config.macros.switchPalette;
+            const mainPaletteTitle = me.getMainPaletteTitle();
 
-            var sourcePaletteTiddler = store.getTiddler(sourcePaletteTitle);
+            const sourcePaletteTiddler = store.getTiddler(sourcePaletteTitle);
             if (!sourcePaletteTiddler) return;
 
-            var targetPaletteTiddler = new Tiddler(mainPaletteTitle);
+            let targetPaletteTiddler = new Tiddler(mainPaletteTitle);
             targetPaletteTiddler.text = sourcePaletteTiddler.text;
             targetPaletteTiddler.creator = sourcePaletteTiddler.creator;
             targetPaletteTiddler.modifier = sourcePaletteTiddler.modifier;
@@ -78,16 +76,16 @@ config.macros.switchPalette = {
             targetPaletteTiddler.links = sourcePaletteTiddler.links;
             targetPaletteTiddler.linksUpdated = sourcePaletteTiddler.linksUpdated;
             targetPaletteTiddler.tags = sourcePaletteTiddler.tags;
-            targetPaletteTiddler.fields = sourcePaletteTiddler.fields;
 
+            Object.assign(targetPaletteTiddler.fields, sourcePaletteTiddler.fields);
             targetPaletteTiddler.fields['from.palette'] = sourcePaletteTitle;
             targetPaletteTiddler.fields['is.dark.mode'] = isDarkMode;
 
             store.saveTiddler(targetPaletteTiddler);
-            story.refreshTiddler(pluginTiddlerTitle, null, true);
+            story.refreshAllTiddlers();
 
             me.applyAdjustments(isDarkMode);
-            refreshColorPalette()
+            refreshColorPalette();
         });
     }
 };
