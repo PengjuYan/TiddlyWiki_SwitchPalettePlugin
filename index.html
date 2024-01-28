@@ -687,23 +687,61 @@ Error: #f88
 <div title="SiteTitle" modifier="Pengju" created="201410101709" modified="202401271205" changecount="5">
 <pre>~SwitchPalettePlugin</pre>
 </div>
+<div title="StyleSheet" creator="Pengju" modifier="Pengju" created="202401280500" modified="202401280532" changecount="50">
+<pre>/*{{{*/
+.viewer code,
+.viewer pre { color: #0000CD; }
+
+.darkMode code,
+.darkMode pre { color: #9ACD32; }
+/*}}}*/
+</pre>
+</div>
 <div title="SwitchPalettePlugin" creator="Pengju Yan" modifier="Pengju" created="202401271119" modified="202401271252" tags="systemConfig systemConfig" changecount="18">
 <pre>/***
 |''Name''|{{{SwitchPalettePlugin}}}|
 |''Description''|Allows to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
 |''Version''|1.0.0|
-|''Source''|[[DarkModePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/DarkModePlugin.js]]|
+|''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
-|''Acknowledgements''|Inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
-!!! Switch Form
+|''Acknowledgements''|Forked from and inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
+!!! Usage
+# ''Warning'': Your original [[ColorPalette]] will be ''overwritten'' by the {{{switchPalette}}} macro, or more precisely, by clicking any button created by the macro. So, you'll need to backup your previous [[ColorPalette]] tiddler before you try it!
+# Import or create color palette tiddlers as you like. You can use any title for each tiddler.
+# Use the {{{switchPalette}}} macro anywhere in your TiddlyWiki, not necessarily in this plugin tiddler.
+# The macro just creates and displays a {{{Switch palette}}} button in the hosting tiddler.
+# Click a button then the associated color palette tiddler will be //saved// to the [[ColorPalette]] tiddler. The colored appearance of your TiddlyWiki will change accordingly.
+!!! Color switch form
+Follow what is shown below in your own tiddlers elsewhere.
 |&lt;&lt;switchPalette &quot;ColorPalette (original)&quot;&gt;&gt;|[[ColorPalette (original)]]|
 |&lt;&lt;switchPalette &quot;ColorPalette (original reversed)&quot; true&gt;&gt;|[[ColorPalette (original reversed)]]|
 |&lt;&lt;switchPalette &quot;ColorPalette (jermolene)&quot;&gt;&gt;|[[ColorPalette (jermolene)]]|
 |&lt;&lt;switchPalette &quot;ColorPalette (jermolene reversed)&quot; true&gt;&gt;|[[ColorPalette (jermolene reversed)]]|
 |&lt;&lt;switchPalette &quot;ColorPalette (yakovl dark)&quot; true&gt;&gt;|[[ColorPalette (yakovl dark)]]|
 |&lt;&lt;switchPalette &quot;ColorPalette (pengju dark)&quot; true&gt;&gt;|[[ColorPalette (pengju dark)]]|
-!!!Code
+!!! Syntax
+The {{{switchPalette}}} macro will display a button shown as {{{Switch palette}}}. For the palette in effect in use, {{{(ON)}}} will be appended to the button text.
+{{{
+&lt;&lt;switchPalette &quot;your color palette tiddler title&quot; &quot;is dark mode or not&quot;&gt;&gt;
+}}}
+See blow for the //dark mode// stuff.
+!!! Installation
+Just import or copy the plugin with the {{{systemConfig}}} tag, then reload.
+!!! Dark mode configuration
+When the dark mode is applied, the {{{darkMode}}} class is added to the {{{html}}} element. This allows to add ''styles for dark mode'' only, like this:
+{{{
+.viewer code,
+.viewer pre { color: #0000CD; }
+
+.darkMode code,
+.darkMode pre { color: #9ACD32; }
+}}}
+Ordinary styles are applied to both modes, but {{{.darkMode}}} ones have higher precedence and &quot;overwrite&quot; the ordinary ones.
+The palette applied for the dark mode can be ''customized'' by editing [[StyleSheet]].
+
+Note that the section {{{FollowDarkMode}}} below is the magic behind, so don't delete it. Of course you can modify it if you know what you are doing.
+!!! Code
 ***/
 //{{{
 config.macros.switchPalette = {
@@ -783,7 +821,7 @@ config.macros.switchPalette = {
 };
 //}}}
 /***
-!!!FollowDarkMode
+!!! FollowDarkMode
 {{{
 .darkMode {
     color-scheme: dark;
