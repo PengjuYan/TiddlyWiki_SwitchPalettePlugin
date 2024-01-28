@@ -86,6 +86,8 @@ config.macros.switchPalette = {
 
             me.applyAdjustments(isDarkMode);
             refreshColorPalette();
+
+            saveChanges();
         });
     }
 };

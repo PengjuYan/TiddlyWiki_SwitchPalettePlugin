@@ -528,7 +528,7 @@ noscript {display:none;} /* Fixes a feature in Firefox 1.5.0.2 where print previ
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="ColorPalette" modifier="Pengju" created="202401260942" modified="202401271137" is.dark.mode="true" from.palette="ColorPalette (pengju dark)" changecount="2" server.page.revision="202401270237" server.type="file">
+<div title="ColorPalette" modifier="Pengju" created="202401260942" modified="202401271137" changecount="2" server.page.revision="202401270237" server.type="file" from.palette="ColorPalette (pengju dark)" is.dark.mode="true">
 <pre>Background: #1e1e1e
 Foreground: #d2d2d2
 PrimaryPale: #438
@@ -776,6 +776,8 @@ config.macros.switchPalette = {
 
             me.applyAdjustments(isDarkMode);
             refreshColorPalette();
+
+            saveChanges();
         });
     }
 };
