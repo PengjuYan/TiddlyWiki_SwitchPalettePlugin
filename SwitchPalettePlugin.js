@@ -1,17 +1,19 @@
 /***
 |''Name''|{{{SwitchPalettePlugin}}}|
-|''Description''|Allows to switch among color palettes by the {{{switchPalette}}} macro|
+|''Description''|Allows you to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
 |''Version''|1.0.0|
 |''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
 |''Acknowledgements''|Forked from and inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
+!!! Installation
+Just import or copy the plugin with the {{{systemConfig}}} tag, then reload.
 !!! Usage
 # ''Warning'': Your original [[ColorPalette]] will be ''overwritten'' by the {{{switchPalette}}} macro, or more precisely, by clicking any button created by the macro. So, you'll need to backup your previous [[ColorPalette]] tiddler before you try it!
 # Import or create color palette tiddlers as you like. You can use any title for each tiddler.
-# Use the {{{switchPalette}}} macro anywhere in your TiddlyWiki, not necessarily in this plugin tiddler.
+# Use the {{{switchPalette}}} macro anywhere in your TiddlyWiki, not necessarily in this plugin tiddler. Designate the color palette title as the first argument to the macro.
 # The macro just creates and displays a {{{Switch palette}}} button in the hosting tiddler.
-# Click a button then the associated color palette tiddler will be //saved// to the [[ColorPalette]] tiddler. The colored appearance of your TiddlyWiki will change accordingly.
+# Click such a button then the associated color palette tiddler will be ''saved'' to the [[ColorPalette]] tiddler. The colored appearance of your TiddlyWiki will change accordingly.
 !!! Color switch form
 Follow what is shown below in your own tiddlers elsewhere.
 |<<switchPalette "ColorPalette (original)">>|[[ColorPalette (original)]]|
@@ -21,17 +23,15 @@ Follow what is shown below in your own tiddlers elsewhere.
 |<<switchPalette "ColorPalette (yakovl dark)" true>>|[[ColorPalette (yakovl dark)]]|
 |<<switchPalette "ColorPalette (pengju dark)" true>>|[[ColorPalette (pengju dark)]]|
 !!! Syntax
-The {{{switchPalette}}} macro will display a button shown as {{{Switch palette}}}. For the palette in effect in use, {{{(ON)}}} will be appended to the button text.
+The {{{switchPalette}}} macro will display a button shown as {{{Switch palette}}}. For the palette in effect in use, {{{(ON)}}} will be appended to the displayed button text.
 {{{
 <<switchPalette "your color palette tiddler title" "is dark mode or not">>
 }}}
-You can designate if a color palette is //dark mode// or not. See blow for more description on it.
-!!! Installation
-Just import or copy the plugin with the {{{systemConfig}}} tag, then reload.
+You can designate if a color palette is ''dark mode'' or not. See blow for more description on it.
 !!! Dark mode configuration
-You may want to apply some global while finer grained styles to all dark mode color palette uniformly. Passing a boolean flag as the second parameter to the macro enables the mechanism.
+You may want to apply some global while finer grained styles to all dark mode color palettes uniformly. Passing a boolean flag as the second argument to the macro enables the mechanism.
 
-When the dark mode is applied, the {{{darkMode}}} class is added to the {{{html}}} element. This allows to add ''styles for dark mode'' only, like this:
+When the dark mode argument is {{{true}}}, the {{{darkMode}}} class is added to the {{{html}}} element. This allows you to add ''styles for dark mode'' only, like this:
 {{{
 .viewer code,
 .viewer pre { color: #0000CD; }
@@ -40,9 +40,9 @@ When the dark mode is applied, the {{{darkMode}}} class is added to the {{{html}
 .darkMode pre { color: #9ACD32; }
 }}}
 
-Ordinary styles are applied to both modes, but {{{.darkMode}}} ones have higher precedence and "overwrite" the ordinary ones.
+Ordinary styles are applied to both modes, but {{{.darkMode}}} ones have higher precedence and ''overwrite'' the ordinary ones.
 
-The palette applied for the dark mode can be ''customized'' by editing [[StyleSheet]].
+The fine grained styles for the dark mode can be ''customized'' by editing [[StyleSheet]].
 
 Note that the section {{{FollowDarkMode}}} below is the magic behind, so don't delete it. Of course you can modify it if you know what you are doing.
 !!! Code
@@ -53,11 +53,22 @@ config.macros.switchPalette = {
         return "ColorPalette";
     },
 
+    getPaletteOrigin: function () {
+        const mainPaletteTitle = this.getMainPaletteTitle();
+        const mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
+        if (!mainPaletteTiddler) return ["", false];
+
+        const originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
+        const originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
+        return [originPaletteTitle, originIsDarkMode];
+    },
+
     applySectionCSS: function (sectionName) {
         const sectionText = store.getRecursiveTiddlerText(this.pluginName + "##" + sectionName, "", 1);
         const css = sectionText.replace(/^\s*{{{((?:.|\n)*?)}}}\s*$/, "$1");
         return setStylesheet(css, sectionName);
     },
+
     applyAdjustments: function (isDarkMode) {
         if (isDarkMode) {
             jQuery('html').addClass('darkMode');
@@ -68,14 +79,9 @@ config.macros.switchPalette = {
         }
     },
 
-    getPaletteOrigin: function () {
-        const mainPaletteTitle = this.getMainPaletteTitle();
-        const mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
-        if (!mainPaletteTiddler) return ["", false];
-
-        const originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
-        const originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
-        return [originPaletteTitle, originIsDarkMode];
+    onStartup: function () {
+        const [originPaletteTitle, originIsDarkMode] = this.getPaletteOrigin();
+        this.applyAdjustments(originIsDarkMode);
     },
 
     handler: function (place, macroName, params, wikifier, paramString, sourceTiddler) {
@@ -123,6 +129,8 @@ config.macros.switchPalette = {
         });
     }
 };
+
+config.macros.switchPalette.onStartup();
 //}}}
 /***
 !!! FollowDarkMode

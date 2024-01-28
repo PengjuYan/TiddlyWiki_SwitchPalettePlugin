@@ -528,7 +528,7 @@ noscript {display:none;} /* Fixes a feature in Firefox 1.5.0.2 where print previ
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="ColorPalette" modifier="Pengju" created="202401260942" modified="202401271137" changecount="2" server.page.revision="202401270237" server.type="file" from.palette="ColorPalette (pengju dark)" is.dark.mode="true">
+<div title="ColorPalette" modifier="Pengju" created="202401260942" modified="202401271137" is.dark.mode="true" from.palette="ColorPalette (pengju dark)" changecount="2" server.page.revision="202401270237" server.type="file">
 <pre>Background: #1e1e1e
 Foreground: #d2d2d2
 PrimaryPale: #438
@@ -653,24 +653,6 @@ Foreground: #ddd
 ~TertiaryDark: #999
 Error: #f44</pre>
 </div>
-<div title="ColorPaletteLight" created="202401271111" changecount="1">
-<pre>Background: #fff
-Foreground: #000
-PrimaryPale: #8cf
-PrimaryLight: #18f
-PrimaryMid: #04b
-PrimaryDark: #014
-SecondaryPale: #ffc
-SecondaryLight: #fe8
-SecondaryMid: #db4
-SecondaryDark: #841
-TertiaryPale: #eee
-TertiaryLight: #ccc
-TertiaryMid: #999
-TertiaryDark: #666
-Error: #f88
-</pre>
-</div>
 <div title="DefaultTiddlers" modifier="Pengju" created="201410101706" modified="202401280302" changecount="7">
 <pre>SwitchPalettePlugin</pre>
 </div>
@@ -700,18 +682,20 @@ Error: #f88
 <div title="SwitchPalettePlugin" creator="Pengju Yan" modifier="Pengju" created="202401271119" modified="202401271252" tags="systemConfig systemConfig" changecount="18">
 <pre>/***
 |''Name''|{{{SwitchPalettePlugin}}}|
-|''Description''|Allows to switch among color palettes by the {{{switchPalette}}} macro|
+|''Description''|Allows you to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
 |''Version''|1.0.0|
 |''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
 |''Acknowledgements''|Forked from and inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
+!!! Installation
+Just import or copy the plugin with the {{{systemConfig}}} tag, then reload.
 !!! Usage
 # ''Warning'': Your original [[ColorPalette]] will be ''overwritten'' by the {{{switchPalette}}} macro, or more precisely, by clicking any button created by the macro. So, you'll need to backup your previous [[ColorPalette]] tiddler before you try it!
 # Import or create color palette tiddlers as you like. You can use any title for each tiddler.
-# Use the {{{switchPalette}}} macro anywhere in your TiddlyWiki, not necessarily in this plugin tiddler.
+# Use the {{{switchPalette}}} macro anywhere in your TiddlyWiki, not necessarily in this plugin tiddler. Designate the color palette title as the first argument to the macro.
 # The macro just creates and displays a {{{Switch palette}}} button in the hosting tiddler.
-# Click a button then the associated color palette tiddler will be //saved// to the [[ColorPalette]] tiddler. The colored appearance of your TiddlyWiki will change accordingly.
+# Click such a button then the associated color palette tiddler will be ''saved'' to the [[ColorPalette]] tiddler. The colored appearance of your TiddlyWiki will change accordingly.
 !!! Color switch form
 Follow what is shown below in your own tiddlers elsewhere.
 |&lt;&lt;switchPalette &quot;ColorPalette (original)&quot;&gt;&gt;|[[ColorPalette (original)]]|
@@ -721,15 +705,15 @@ Follow what is shown below in your own tiddlers elsewhere.
 |&lt;&lt;switchPalette &quot;ColorPalette (yakovl dark)&quot; true&gt;&gt;|[[ColorPalette (yakovl dark)]]|
 |&lt;&lt;switchPalette &quot;ColorPalette (pengju dark)&quot; true&gt;&gt;|[[ColorPalette (pengju dark)]]|
 !!! Syntax
-The {{{switchPalette}}} macro will display a button shown as {{{Switch palette}}}. For the palette in effect in use, {{{(ON)}}} will be appended to the button text.
+The {{{switchPalette}}} macro will display a button shown as {{{Switch palette}}}. For the palette in effect in use, {{{(ON)}}} will be appended to the displayed button text.
 {{{
 &lt;&lt;switchPalette &quot;your color palette tiddler title&quot; &quot;is dark mode or not&quot;&gt;&gt;
 }}}
-See blow for the //dark mode// stuff.
-!!! Installation
-Just import or copy the plugin with the {{{systemConfig}}} tag, then reload.
+You can designate if a color palette is ''dark mode'' or not. See blow for more description on it.
 !!! Dark mode configuration
-When the dark mode is applied, the {{{darkMode}}} class is added to the {{{html}}} element. This allows to add ''styles for dark mode'' only, like this:
+You may want to apply some global while finer grained styles to all dark mode color palettes uniformly. Passing a boolean flag as the second argument to the macro enables the mechanism.
+
+When the dark mode argument is {{{true}}}, the {{{darkMode}}} class is added to the {{{html}}} element. This allows you to add ''styles for dark mode'' only, like this:
 {{{
 .viewer code,
 .viewer pre { color: #0000CD; }
@@ -737,8 +721,10 @@ When the dark mode is applied, the {{{darkMode}}} class is added to the {{{html}
 .darkMode code,
 .darkMode pre { color: #9ACD32; }
 }}}
-Ordinary styles are applied to both modes, but {{{.darkMode}}} ones have higher precedence and &quot;overwrite&quot; the ordinary ones.
-The palette applied for the dark mode can be ''customized'' by editing [[StyleSheet]].
+
+Ordinary styles are applied to both modes, but {{{.darkMode}}} ones have higher precedence and ''overwrite'' the ordinary ones.
+
+The fine grained styles for the dark mode can be ''customized'' by editing [[StyleSheet]].
 
 Note that the section {{{FollowDarkMode}}} below is the magic behind, so don't delete it. Of course you can modify it if you know what you are doing.
 !!! Code
@@ -749,11 +735,22 @@ config.macros.switchPalette = {
         return &quot;ColorPalette&quot;;
     },
 
+    getPaletteOrigin: function () {
+        const mainPaletteTitle = this.getMainPaletteTitle();
+        const mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
+        if (!mainPaletteTiddler) return [&quot;&quot;, false];
+
+        const originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
+        const originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
+        return [originPaletteTitle, originIsDarkMode];
+    },
+
     applySectionCSS: function (sectionName) {
         const sectionText = store.getRecursiveTiddlerText(this.pluginName + &quot;##&quot; + sectionName, &quot;&quot;, 1);
         const css = sectionText.replace(/^\s*{{{((?:.|\n)*?)}}}\s*$/, &quot;$1&quot;);
         return setStylesheet(css, sectionName);
     },
+
     applyAdjustments: function (isDarkMode) {
         if (isDarkMode) {
             jQuery('html').addClass('darkMode');
@@ -764,14 +761,9 @@ config.macros.switchPalette = {
         }
     },
 
-    getPaletteOrigin: function () {
-        const mainPaletteTitle = this.getMainPaletteTitle();
-        const mainPaletteTiddler = store.getTiddler(mainPaletteTitle);
-        if (!mainPaletteTiddler) return [&quot;&quot;, false];
-
-        const originPaletteTitle = mainPaletteTiddler.fields['from.palette'];
-        const originIsDarkMode = mainPaletteTiddler.fields['is.dark.mode'];
-        return [originPaletteTitle, originIsDarkMode];
+    onStartup: function () {
+        const [originPaletteTitle, originIsDarkMode] = this.getPaletteOrigin();
+        this.applyAdjustments(originIsDarkMode);
     },
 
     handler: function (place, macroName, params, wikifier, paramString, sourceTiddler) {
@@ -819,6 +811,8 @@ config.macros.switchPalette = {
         });
     }
 };
+
+config.macros.switchPalette.onStartup();
 //}}}
 /***
 !!! FollowDarkMode
