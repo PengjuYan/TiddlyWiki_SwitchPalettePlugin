@@ -4,6 +4,7 @@
 |''Author''|Pengju Yan|
 |''Version''|1.0.0|
 |''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
+|''Documentation''|[[SwitchPalettePlugin on github.io|https://pengjuyan.github.io/TiddlyWiki_SwitchPalettePlugin/]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
 |''Acknowledgements''|Forked from and inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
 !!! Installation
@@ -44,7 +45,20 @@ Ordinary styles are applied to both modes, but {{{.darkMode}}} ones have higher 
 
 The fine grained styles for the dark mode can be ''customized'' by editing [[StyleSheet]].
 
-Note that the section {{{FollowDarkMode}}} below is the magic behind, so don't delete it. Of course you can modify it if you know what you are doing.
+Note that the section {{{FollowDarkMode}}} below is part of the magic behind, so don't delete it. Of course you can modify it if you know what you are doing.
+!!! Development
+This work was inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]] and was started by forking from it.
+
+Learning from {{{DarkModePlugin}}}:
+# The {{{TiddlerInFilePlugin.js}}} is a very nice helper for plugin development.
+# I followed the {{{createTiddlyButton()}}} way for the user to interact with the macro.
+# The {{{darkMode}}} mechanism was inherited.
+# Release plugin document to {{{GitHub Pages}}}.
+
+{{{SwitchPalettePlugin}}} features (c.f. {{{DarkModePlugin}}}):
+|!{{{SwitchPalettePlugin}}}|!{{{DarkModePlugin}}}|
+|The users takes full control. They change color palette only when they want to.|Automatically switch to dark mode on startup if the dark mode is set system wide.|
+|Releases several reversed color palette, including {{{DarkModePlugin}}}'s {{{ColorPaletteDark}}} (renamed to [[ColorPalette (yakovl dark)]]).|Releases a dark mode color palette: {{{ColorPaletteDark}}}.|
 !!! Code
 ***/
 //{{{
