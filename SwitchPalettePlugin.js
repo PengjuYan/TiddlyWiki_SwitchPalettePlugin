@@ -1,4 +1,5 @@
 /***
+!!! Plugin info
 |''Name''|{{{SwitchPalettePlugin}}}|
 |''Description''|Allows you to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
@@ -15,7 +16,7 @@ Just import or copy the plugin with the {{{systemConfig}}} tag, then reload.
 # Use the {{{switchPalette}}} macro anywhere in your TiddlyWiki, not necessarily in this plugin tiddler. Designate the color palette title as the first argument to the macro.
 # The macro just creates and displays a {{{Switch palette}}} button in the hosting tiddler.
 # Click such a button then the associated color palette tiddler will be ''saved'' to the [[ColorPalette]] tiddler. The colored appearance of your TiddlyWiki will change accordingly.
-!!! Color switch form
+!!! Color palette switch form
 Follow what is shown below in your own tiddlers elsewhere.
 |<<switchPalette "ColorPalette (original)">>|[[ColorPalette (original)]]|
 |<<switchPalette "ColorPalette (original reversed)" true>>|[[ColorPalette (original reversed)]]|
