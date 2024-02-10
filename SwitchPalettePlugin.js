@@ -3,7 +3,7 @@
 |''Name''|{{{SwitchPalettePlugin}}}|
 |''Description''|Allows you to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
-|''Version''|1.0.0|
+|''Version''|1.0.1|
 |''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
 |''Documentation''|[[SwitchPalettePlugin on github.io|https://pengjuyan.github.io/TiddlyWiki_SwitchPalettePlugin/]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
@@ -140,7 +140,7 @@ config.macros.switchPalette = {
             me.applyAdjustments(isDarkMode);
             refreshColorPalette();
 
-            saveChanges();
+            autoSaveChanges();
         });
     }
 };

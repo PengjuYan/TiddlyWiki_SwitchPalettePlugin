@@ -528,7 +528,7 @@ noscript {display:none;} /* Fixes a feature in Firefox 1.5.0.2 where print previ
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
-<div title="ColorPalette" modifier="Pengju" created="202401260942" modified="202401271137" changecount="2" server.page.revision="202401270237" server.type="file" from.palette="ColorPalette (pengju dark)" is.dark.mode="true">
+<div title="ColorPalette" modifier="Pengju" created="202401260942" modified="202401271137" is.dark.mode="true" from.palette="ColorPalette (pengju dark)" server.type="file" server.page.revision="202401270237" changecount="2">
 <pre>Background: #1e1e1e
 Foreground: #d2d2d2
 PrimaryPale: #438
@@ -546,7 +546,7 @@ TertiaryDark: #bbb
 Error: #077
 </pre>
 </div>
-<div title="ColorPalette (jermolene reversed)" modifier="Pengju" created="202212270950" modified="202212271300" server.page.revision="202212271300" server.type="file">
+<div title="ColorPalette (jermolene reversed)" modifier="Pengju" created="202212270950" modified="202212271300" server.type="file" server.page.revision="202212271300">
 <pre>Background: #000
 Foreground: #fff
 PrimaryPale: #510
@@ -564,7 +564,7 @@ TertiaryDark: #999
 Error: #077
 </pre>
 </div>
-<div title="ColorPalette (jermolene)" modifier="Pengju" created="201110201351" modified="202212271252" server.page.revision="202212271252" server.type="file">
+<div title="ColorPalette (jermolene)" modifier="Pengju" created="201110201351" modified="202212271252" server.type="file" server.page.revision="202212271252">
 <pre>Background: #fff
 Foreground: #000
 PrimaryPale: #aef
@@ -582,7 +582,7 @@ TertiaryDark: #666
 Error: #f88
 </pre>
 </div>
-<div title="ColorPalette (original reversed)" modifier="Pengju" created="202212271301" modified="202212271302" server.page.revision="202212271302" server.type="file">
+<div title="ColorPalette (original reversed)" modifier="Pengju" created="202212271301" modified="202212271302" server.type="file" server.page.revision="202212271302">
 <pre>Background: #000
 Foreground: #fff
 PrimaryPale: #730
@@ -600,7 +600,7 @@ TertiaryDark: #999
 Error: #077
 </pre>
 </div>
-<div title="ColorPalette (original)" modifier="Pengju" created="202212271249" server.page.revision="202212271249" server.type="file">
+<div title="ColorPalette (original)" modifier="Pengju" created="202212271249" server.type="file" server.page.revision="202212271249">
 <pre>Background: #fff
 Foreground: #000
 PrimaryPale: #8cf
@@ -618,7 +618,7 @@ TertiaryDark: #666
 Error: #f88
 </pre>
 </div>
-<div title="ColorPalette (pengju dark)" modifier="Pengju" created="202401260942" modified="202401271137" changecount="1" server.page.revision="202401270237" server.type="file">
+<div title="ColorPalette (pengju dark)" modifier="Pengju" created="202401260942" modified="202401271137" server.type="file" server.page.revision="202401270237" changecount="1">
 <pre>Background: #1e1e1e
 Foreground: #d2d2d2
 PrimaryPale: #438
@@ -636,7 +636,7 @@ TertiaryDark: #bbb
 Error: #077
 </pre>
 </div>
-<div title="ColorPalette (yakovl dark)" modifier="Pengju" created="202401250937" modified="202401271128" changecount="1" server.page.revision="202401250949" server.type="file">
+<div title="ColorPalette (yakovl dark)" modifier="Pengju" created="202401250937" modified="202401271128" server.type="file" server.page.revision="202401250949" changecount="1">
 <pre>Background: #000
 Foreground: #ddd
 ~PrimaryPale: #730
@@ -679,13 +679,13 @@ Error: #f44</pre>
 /*}}}*/
 </pre>
 </div>
-<div title="SwitchPalettePlugin" creator="Pengju Yan" modifier="Pengju" created="202401271119" modified="202401271252" tags="systemConfig" changecount="18">
+<div title="SwitchPalettePlugin" creator="Pengju Yan" modifier="Pengju" created="202401271119" modified="202402100848" tags="systemConfig" changecount="19">
 <pre>/***
 !!! Plugin info
 |''Name''|{{{SwitchPalettePlugin}}}|
 |''Description''|Allows you to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
-|''Version''|1.0.0|
+|''Version''|1.0.1|
 |''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
 |''Documentation''|[[SwitchPalettePlugin on github.io|https://pengjuyan.github.io/TiddlyWiki_SwitchPalettePlugin/]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
@@ -822,7 +822,7 @@ config.macros.switchPalette = {
             me.applyAdjustments(isDarkMode);
             refreshColorPalette();
 
-            saveChanges();
+            autoSaveChanges();
         });
     }
 };
@@ -839,7 +839,7 @@ config.macros.switchPalette.onStartup();
 ***/
 </pre>
 </div>
-<div title="TiddlerInFilePlugin" modifier="Yakov Litvin" created="201808191403" modified="202212060812" tags="systemConfig" changecount="274" content-type="text/javascript">
+<div title="TiddlerInFilePlugin" modifier="Yakov Litvin" created="201808191403" modified="202212060812" tags="systemConfig" content-type="text/javascript" changecount="274">
 <pre>/***
 |Description|Allows to store any number of tiddlers as external files and more|
 |Version|1.1.2|
