@@ -4,7 +4,7 @@
 |''Description''|Allows you to switch among color palettes by the {{{switchPalette}}} macro|
 |''Author''|Pengju Yan|
 |''Version''|1.0.1|
-|''Source''|[[SwitchPalettePlugin.js|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js]]|
+|''Source''|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/SwitchPalettePlugin.js|
 |''Documentation''|[[SwitchPalettePlugin on github.io|https://pengjuyan.github.io/TiddlyWiki_SwitchPalettePlugin/]]|
 |''License''|[[MIT|https://github.com/PengjuYan/TiddlyWiki_SwitchPalettePlugin/blob/master/LICENSE]]|
 |''Acknowledgements''|Forked from and inspired by Yakov Litvin's [[DarkModePlugin|https://github.com/YakovL/TiddlyWiki_DarkModePlugin/]]|
